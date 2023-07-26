@@ -12,6 +12,7 @@ int execute_command(char **args, char **env)
 {
 
 	pid_t pid;
+	int status;
 
 	pid = fork();
 	if (pid == -1)
@@ -30,9 +31,8 @@ int execute_command(char **args, char **env)
 	}
 	else
 	{
-		int status;
 
 		waitpid(pid, &status, 0);
 	}
-	return (0);
+	return (status);
 }

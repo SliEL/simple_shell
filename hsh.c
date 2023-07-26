@@ -43,11 +43,12 @@ int hsh(int argc, char *argv[], FILE *fp)
 				return (127);
 			continue;
 		}
-		execute_command(args, env);
+		if (execute_command(args, env) == 512)
+			last_status = 2;
 		free(args);
 		free(fullPath);
 		args = NULL;
 	}
 	free(buffer);
-	return (EXIT_SUCCESS);
+	return (last_status);
 }

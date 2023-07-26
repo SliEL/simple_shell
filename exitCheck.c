@@ -45,6 +45,7 @@ void exitCheck(char **args, char *buffer)
 	{
 		free(buffer);
 		free(args);
-		exit(EXIT_SUCCESS);
+		/*exit(EXIT_SUCCESS);*/
+		exit(last_status);
 	}
 }

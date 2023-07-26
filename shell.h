@@ -16,6 +16,8 @@ extern char **environ;
 #define READ_BUF_SIZE 1024
 #define WRITE_BUF_SIZE 1024
 
+extern int last_status;
+
 int hsh(int argc, char *argv[], FILE *fp);
 
 void _eputs(char *str);

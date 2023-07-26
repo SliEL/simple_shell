@@ -1,10 +1,13 @@
 #include "shell.h"
+
+int last_status = 0;
 /**
  * main - Main function to run the shell.
  * @argc: The argument count.
  * @argv: The argument vector.
  * Return: The exit status of the shell.
  */
+
 int main(int argc, char *argv[])
 {
 	FILE *fp = stdin;
@@ -33,5 +36,5 @@ int main(int argc, char *argv[])
 	{
 		fclose(fp);
 	}
-	return (EXIT_SUCCESS);
+	return (last_status);
 }
