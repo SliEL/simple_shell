@@ -7,6 +7,7 @@
 char *handlePath(char *command)
 {
 	char *fullPath;
+
 	if (access(command, F_OK) != -1)
 	{
 		fullPath = malloc(sizeof(char) * (_strlen(command) + 1));

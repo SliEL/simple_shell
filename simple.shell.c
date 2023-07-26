@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 		if (_strcmp(buffer, "\n") == 0 || buffer[0] == '#')
 			continue;
 		delete_spaces(buffer);
+		if (check_spaces(buffer) == 1)
+			continue;
 		handleComment(buffer);
 		args = handleArguments(buffer);
 		if (strcmp(args[0], "cd") == 0)

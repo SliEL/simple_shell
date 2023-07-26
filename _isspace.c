@@ -33,3 +33,4 @@ void *delete_spaces(char *prompt)
 	prompt[i] = '\0';
 	return (0);
 }
+

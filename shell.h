@@ -22,7 +22,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_strtok(char *str, const char *delim);
 
 int _isspace(int c);
-
+int check_spaces(char *buffer);
 void printPrompt(void);
 void *delete_spaces(char *prompt);
 char **handleArguments(char *buffer);
