@@ -10,7 +10,14 @@
 #include <stddef.h>
 #include <limits.h>
 #include <stdarg.h>
+#include <errno.h>
 extern char **environ;
+#define BUF_FLUSH -1
+#define READ_BUF_SIZE 1024
+#define WRITE_BUF_SIZE 1024
+
+void _eputs(char *str);
+int _eputchar(char c);
 
 int _strlen(char *s);
 int _strcmp(const char *s1, const char *s2);

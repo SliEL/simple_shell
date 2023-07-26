@@ -9,11 +9,33 @@ int main(int argc, char *argv[])
 {
 	char *buffer = NULL, *fullPath, **args, **env = environ;
 	size_t bufsize = 0;
+	FILE *fp = stdin; // file pointer defaults to stdin
+
+	// If a file argument was provided, attempt to open the file
+	if (argc == 2)
+	{
+		fp = fopen(argv[1], "r");
+		if (fp == NULL)
+		{
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(argv[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(argv[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
+			return (EXIT_FAILURE);
+		}
+	}
 
 	while (1)
 	{
 		printPrompt();
-		if (_getline(&buffer, &bufsize, stdin) == -1)
+		if (_getline(&buffer, &bufsize, fp) == -1)
 			break;
 		if (_strcmp(buffer, "\n") == 0 || buffer[0] == '#')
 			continue;
