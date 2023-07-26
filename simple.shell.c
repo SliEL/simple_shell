@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 	FILE *fp = stdin;
 
 	fp = read_from_file(argc, argv);
+	if (fp == NULL)
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		printPrompt();
