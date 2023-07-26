@@ -1,48 +1,38 @@
 #include "shell.h"
 #define BUFFER_SIZE 1024
 /**
- * execute_command - Executes a command with arguments.
- * @args: The array of command arguments.
+ * execute_command - Executes a command in a new process.
+ * @args: An array of arguments, where args[0] is the command
+ * and args[1] onwards are arguments.
  * @env: The environment variables.
  *
- * Return: Always 0.
+ * Return: Always returns 0.
  */
 int execute_command(char **args, char **env)
 {
-	int len_arg, len_bin, status;
-	pid_t pid;
-	char *BIN_PATH = "/bin/";
-	char *dest;
-	int ncmp;
 
-	len_bin = _strlen(BIN_PATH);
+	pid_t pid;
+
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("fork");
+		perror("fork error");
 		exit(EXIT_FAILURE);
 	}
+
 	else if (pid == 0)
 	{
-		ncmp = _strncmp(args[0], BIN_PATH, len_bin);
-		if (ncmp == -1)
+		if (execve(args[0], args, env) == -1)
 		{
-			len_arg = strlen(args[0]);
-			dest = malloc(sizeof(char) * (len_bin + len_arg + 1));
-			if (dest == NULL)
-				free(dest);
-			copy(dest, BIN_PATH);
-			concat(dest, args[0]);
-			args[0] = dest;
+			free(args);
+			exit(EXIT_FAILURE);
 		}
-		execve(args[0], args, env);
-
-		perror("execve");
-		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		wait(&status);
+		int status;
+
+		waitpid(pid, &status, 0);
 	}
 	return (0);
 }

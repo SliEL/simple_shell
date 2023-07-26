@@ -1,42 +1,40 @@
 #include "shell.h"
-
 /**
- * _strtok - tokenize a str based on a del
- * @str: string to tokenize
- * @del: delimiters to check for
- * Return: tokens one by one or NULL;
+ * _strtok - Tokenize a string by splitting it into
+ *           substrings based on a delimiter.
+ * @str: The input string to be tokenized.
+ * @delim: The delimiter character used to split the string.
+ *
+ * Return: A pointer to the next token found in the string
+ *         or NULL if no more tokens are found.
  */
-
-char *_strtok(char *str, char *del)
+char *_strtok(char *str, const char *delim)
 {
-	char *start, *end;
-	static char *token;
+	static char *save_ptr;
+	char *token_start;
+	char *token_end;
 
 	if (str != NULL)
-		token = str;
-	else if (token == NULL)
+		save_ptr = str;
+
+	if (save_ptr == NULL || *save_ptr == '\0')
 		return (NULL);
 
-	start = token;
-	while (*start != '\0' && _strrchr(del, *start) != NULL)
-		start++;
-	end = start;
-	while (*end != '\0' && _strrchr(del, *end) == NULL)
-		end++;
+	while (_strchr(delim, *save_ptr) != NULL)
+		save_ptr++;
 
-	if (start == end)
-	{
-		token = NULL;
-		return (NULL);
-	}
+	token_start = save_ptr;
+	token_end = _strchr(token_start, *delim);
 
-	if (*end != '\0')
+	if (token_end != NULL)
 	{
-		*end = '\0';
-		token = end + 1;
+		*token_end = '\0';
+		save_ptr = token_end + 1;
 	}
 	else
-		token = NULL;
+	{
+		save_ptr = NULL;
+	}
 
-	return (start);
+	return (token_start);
 }

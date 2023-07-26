@@ -1,34 +1,52 @@
 #include "shell.h"
-/**
- * _getline - Reads a line from a file descriptor.
- * @line: A pointer to the buffer storing the line.
- * @n: The maximum number of characters to read.
- * @fileDescriptor: The file descriptor to read from.
- *
- * Return: The number of characters read, -1 on failure.
- */
-ssize_t _getline(char **line, size_t n, int fileDescriptor)
-{
-	char buf[10000];
-	ssize_t r;
 
-	if (n == 0)
-	{
-		r = read(fileDescriptor, buf, sizeof(buf));
-	}
-	else
-		r = read(fileDescriptor, buf, n);
-	if (r == -1)
-	{
+/**
+ * _getline - Read a line from a file stream.
+ * @lineptr: A pointer to a char pointer to store the read line.
+ * @n: A pointer to the size_t variable to store the allocated size
+ *     of the buffer.
+ * @stream: The file stream to read from (e.g., stdin).
+ *
+ * Return: The number of characters read (including the newline character),
+ *         -1 on error or end-of-file (EOF).
+ */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+{
+	int ch;
+	size_t capacity = 0, index = 0;
+	char *new_lineptr;
+
+	if (lineptr == NULL || n == NULL || stream == NULL)
 		return (-1);
-	}
-	if (r > 0)
+	if (*lineptr == NULL || *n == 0)
 	{
-		buf[r] = '\0';
-		*line = malloc((r + 1) * sizeof(char));
-		if (*line == NULL)
-			free(*line);
-		copy(*line, buf);
+		capacity = 128;
+		*lineptr = (char *)malloc(capacity);
+		if (*lineptr == NULL)
+			return (-1);
+
+		*n = capacity;
 	}
-	return (r);
+	while ((ch = fgetc(stream)) != EOF)
+	{
+		if (index >= *n - 1)
+		{
+			capacity *= 2;
+			new_lineptr = (char *)realloc(*lineptr, capacity);
+			if (new_lineptr == NULL)
+			{
+				free(*lineptr);
+				return (-1);
+			}
+			*lineptr = new_lineptr;
+			*n = capacity;
+		}
+		(*lineptr)[index++] = ch;
+		if (ch == '\n')
+			break;
+	}
+	if (index == 0)
+		return (-1);
+	(*lineptr)[index] = '\0';
+	return (index);
 }
