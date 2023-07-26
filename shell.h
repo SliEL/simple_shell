@@ -24,6 +24,8 @@ int _strcmp(const char *s1, const char *s2);
 char *_strcat(char *dest, const char *src);
 char *_strcpy(char *dest, const char *src);
 char *_strchr(const char *s, int c);
+FILE *read_from_file(int argc, char *argv[]);
+void free_stuff(char *p, char **ptr);
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_strtok(char *str, const char *delim);

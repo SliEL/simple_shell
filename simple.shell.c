@@ -9,29 +9,9 @@ int main(int argc, char *argv[])
 {
 	char *buffer = NULL, *fullPath, **args, **env = environ;
 	size_t bufsize = 0;
-	FILE *fp = stdin; /* file pointer defaults to stdin */
+	FILE *fp = stdin;
 
-	/*If a file argument was provided, attempt to open the file*/
-	if (argc > 1)
-	{
-		fp = fopen(argv[1], "r");
-		if (fp == NULL)
-		{
-			if (errno == EACCES)
-				exit(126);
-			if (errno == ENOENT)
-			{
-				_eputs(argv[0]);
-				_eputs(": 0: Can't open ");
-				_eputs(argv[1]);
-				_eputchar('\n');
-				_eputchar(BUF_FLUSH);
-				exit(127);
-			}
-			return (EXIT_FAILURE);
-		}
-	}
-
+	fp = read_from_file(argc, argv);
 	while (1)
 	{
 		printPrompt();
@@ -56,20 +36,14 @@ int main(int argc, char *argv[])
 		if (commandNotFound(fullPath) == -1)
 		{
 			notFoundMessage(argc, argv[0], buffer);
-			free(fullPath);
-			free(args);
+			free_stuff(fullPath, args);
 			if (!isatty(STDIN_FILENO))
 				return (127);
 			continue;
 		}
 		execute_command(args, env);
-		free(args);
-		free(fullPath);
+		free_stuff(fullPath, args);
 		args = NULL;
-	}
-	if (fp != stdin)
-	{
-		fclose(fp);
 	}
 	free(buffer);
 	return (EXIT_SUCCESS);
