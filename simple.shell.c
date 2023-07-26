@@ -7,46 +7,31 @@
  */
 int main(int argc, char *argv[])
 {
-	char *buffer = NULL, *fullPath, **args, **env = environ;
-	size_t bufsize = 0;
 	FILE *fp = stdin;
 
-	fp = read_from_file(argc, argv);
-	if (fp == NULL)
-		return (EXIT_FAILURE);
-	while (1)
+	if (argc > 1)
 	{
-		printPrompt();
-		if (_getline(&buffer, &bufsize, fp) == -1)
-			break;
-		if (_strcmp(buffer, "\n") == 0 || buffer[0] == '#')
-			continue;
-		delete_spaces(buffer);
-		if (check_spaces(buffer) == 1)
-			continue;
-		handleComment(buffer);
-		args = handleArguments(buffer);
-		if (strcmp(args[0], "cd") == 0)
+		fp = fopen(argv[1], "r");
+		if (fp == NULL)
 		{
-			change_directory(args);
-			free(args);
-			continue;
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(argv[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(argv[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
+			return (EXIT_FAILURE);
 		}
-		exitCheck(args, buffer);
-		fullPath = handlePath(buffer);
-		args[0] = fullPath;
-		if (commandNotFound(fullPath) == -1)
-		{
-			notFoundMessage(argc, argv[0], buffer);
-			free_stuff(fullPath, args);
-			if (!isatty(STDIN_FILENO))
-				return (127);
-			continue;
-		}
-		execute_command(args, env);
-		free_stuff(fullPath, args);
-		args = NULL;
 	}
-	free(buffer);
+	hsh(argc, argv, fp);
+	if (fp != stdin)
+	{
+		fclose(fp);
+	}
 	return (EXIT_SUCCESS);
 }
