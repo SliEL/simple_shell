@@ -9,10 +9,10 @@ int main(int argc, char *argv[])
 {
 	char *buffer = NULL, *fullPath, **args, **env = environ;
 	size_t bufsize = 0;
-	FILE *fp = stdin; // file pointer defaults to stdin
+	FILE *fp = stdin; /* file pointer defaults to stdin */
 
-	// If a file argument was provided, attempt to open the file
-	if (argc == 2)
+	/*If a file argument was provided, attempt to open the file*/
+	if (argc > 1)
 	{
 		fp = fopen(argv[1], "r");
 		if (fp == NULL)
@@ -66,6 +66,10 @@ int main(int argc, char *argv[])
 		free(args);
 		free(fullPath);
 		args = NULL;
+	}
+	if (fp != stdin)
+	{
+		fclose(fp);
 	}
 	free(buffer);
 	return (EXIT_SUCCESS);
