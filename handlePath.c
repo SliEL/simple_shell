@@ -7,15 +7,23 @@
 char *handlePath(char *command)
 {
 	char *fullPath;
-
-	if (strncmp(command, "/bin/", 5) != 0)
+	if (access(command, F_OK) != -1)
 	{
-		fullPath = malloc(sizeof(char) * (_strlen(command) + 6));
-		_strcpy(fullPath, "/bin/");
-		_strcat(fullPath, command);
+		fullPath = malloc(sizeof(char) * (_strlen(command) + 1));
+		_strcpy(fullPath, command);
 		return (fullPath);
 	}
-	fullPath = malloc(sizeof(char) * (_strlen(command) + 1));
-	_strcpy(fullPath, command);
-	return (fullPath);
+	else
+	{
+		if (strncmp(command, "/bin/", 5) != 0)
+		{
+			fullPath = malloc(sizeof(char) * (_strlen(command) + 6));
+			_strcpy(fullPath, "/bin/");
+			_strcat(fullPath, command);
+			return (fullPath);
+		}
+		fullPath = malloc(sizeof(char) * (_strlen(command) + 1));
+		_strcpy(fullPath, command);
+		return (fullPath);
+	}
 }
