@@ -23,7 +23,7 @@ char *_strtok(char *str, const char *delim);
 
 int _isspace(int c);
 
-void printPrompt();
+void printPrompt(void);
 void *delete_spaces(char *prompt);
 char **handleArguments(char *buffer);
 int execute_command(char **args, char **env);
@@ -37,5 +37,5 @@ void execute_separated_commands(char *commands, char **env);
 void handleComment(char *command);
 int this_is_comment(char *line);
 void change_directory(char **args);
-void execute_pwd();
+void execute_pwd(void);
 #endif
