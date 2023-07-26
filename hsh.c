@@ -7,7 +7,6 @@
  * @fp: stream to read from
  * Return: Nothing
  */
-
 int hsh(int argc, char *argv[], FILE *fp)
 {
 	char *buffer = NULL, *fullPath, **args, **env = environ;
@@ -45,8 +44,7 @@ int hsh(int argc, char *argv[], FILE *fp)
 		}
 		if (execute_command(args, env) == 512)
 			last_status = 2;
-		free(args);
-		free(fullPath);
+		free_stuff(fullPath, args);
 		args = NULL;
 	}
 	free(buffer);
