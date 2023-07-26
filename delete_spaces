@@ -1,0 +1,33 @@
+#include "shell.h"
+/**
+ * delete_spaces - Removes spaces from a string.
+ * @str: The string to remove spaces from.
+ *
+ * Return: The modified string.
+ */
+char *delete_spaces(char *str, const char c)
+{
+	char *result;
+	int i = 0, y = 0;
+
+	result = malloc(strlen(str) + 1);
+	if (result == NULL)
+	{
+		free(result);
+		return (NULL);
+	}
+	while (str[i])
+	{
+		if (str[i] == ' ' && str[i + 1] == c)
+		{
+			i++;
+		}
+		if (str[i] == ' ' && str[i - 1] == c)
+		{
+			i++;
+		}
+		result[y++] = str[i++];
+	}
+	result[y] = '\0';
+	return (result);
+}
